@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'groovy'
 }
 
 group = 'pl.dk'
@@ -10,14 +11,23 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	jcenter()
+	maven {
+		url "https://repo.spring.io/release"
+	}
 }
+
+ext['groovy.version'] = '3.0.4'
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.codehaus.groovy:groovy-all:3.0.4'
+	testImplementation 'org.spockframework:spock-spring:2.0-M3-groovy-3.0'
 }
 
 test {
