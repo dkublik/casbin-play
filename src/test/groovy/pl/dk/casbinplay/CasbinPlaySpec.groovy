@@ -11,11 +11,11 @@ class CasbinPlaySpec extends Specification {
         String policyPath = this.class.classLoader.getResource('security/policy.csv').path
         Enforcer enforcer = new Enforcer(modelPath, policyPath)
         Subject alice = new Subject('Alice', 21)
-        String obj = "/data1"
-        String act = "read"
+        Resource article = new Resource('content', 'Standard:Article')
+        String action = 'read'
 
         expect:
-        enforcer.enforce(alice, obj, act) == true
+        enforcer.enforce(alice, article, action) == true
     }
 
 }
