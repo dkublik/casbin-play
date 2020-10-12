@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'io.freefair.lombok' version '5.1.0'
 	id 'java'
 	id 'groovy'
 }
@@ -18,6 +19,15 @@ repositories {
 }
 
 ext['groovy.version'] = '3.0.4'
+
+lombok {
+	version = '1.18.12'
+	config['config.stopBubbling'] = 'true'
+	// config['lombok.extern.findbugs.addSuppressFBWarnings'] = 'true'
+	config['lombok.addLombokGeneratedAnnotation'] = 'true'
+	config['lombok.anyConstructor.addConstructorProperties'] = 'true'
+	config['lombok.val.flagUsage'] = 'error'
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
