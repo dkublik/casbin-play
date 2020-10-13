@@ -13,9 +13,10 @@ class CasbinPlaySpec extends Specification {
         Subject alice = new Subject('Alice', 21)
         Resource article = new Resource('content', 'Standard:Article')
         String action = 'read'
+        String site = 'paramountplus-italy'
 
         expect:
-        enforcer.enforce(alice, article, action) == true
+        enforcer.enforce(alice, article, site, action) == true
     }
 
 }

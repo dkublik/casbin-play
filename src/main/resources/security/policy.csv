@@ -1,2 +1,4 @@
-p, r.subject.age > 18 && r.subject.age < 25, content, Standard:Article, read
+p, r.subject.age > 18 && r.subject.age < 25, content, Standard:Article, editor, read
 
+g, Alice, editor, paramountplus-italy
+g, Alice, writer, testq-nick
