@@ -1,4 +1,2 @@
-p, r.subject.age > 18 && r.subject.age < 25, content, Standard:Article, editor, read
+p, ["Producer"; "Admin"; "INTL Shared Producers"], content, Standard:Article, .*
 
-g, Alice, editor, paramountplus-italy
-g, Alice, writer, testq-nick
