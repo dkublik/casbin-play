@@ -17,11 +17,11 @@ class CasbinPlaySpec extends Specification {
                 'paramountplus-italy': [role],
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        Resource article = new Resource('menu', null)
+        MenuResource menu = new MenuResource()
         String site = 'paramountplus-italy'
 
         expect:
-        enforcer.enforce(alice, article, site, action) == isAllowed
+        enforcer.enforce(alice, menu, site, action) == isAllowed
 
         where:
         role                                                      |   action   || isAllowed
@@ -38,7 +38,7 @@ class CasbinPlaySpec extends Specification {
                 'paramountplus-italy': ['Producer'],
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        Resource article = new Resource('content', contentType)
+        ContentResource article = new ContentResource(contentType)
         String site = 'paramountplus-italy'
 
         expect:
@@ -57,7 +57,7 @@ class CasbinPlaySpec extends Specification {
                 'paramountplus-italy': ['Producer - No Series | No Season | No Authority Types'],
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        Resource article = new Resource('content', contentType)
+        ContentResource article = new ContentResource(contentType)
         String site = 'paramountplus-italy'
 
         expect:
