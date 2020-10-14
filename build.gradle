@@ -31,6 +31,7 @@ lombok {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.codehaus.groovy:groovy-all:3.0.4'
 
 	implementation 'org.casbin:jcasbin:1.6.0'
 
@@ -39,7 +40,6 @@ dependencies {
 	}
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.codehaus.groovy:groovy-all:3.0.4'
 	testImplementation 'org.spockframework:spock-spring:2.0-M3-groovy-3.0'
 }
 
