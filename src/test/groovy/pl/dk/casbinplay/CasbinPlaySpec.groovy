@@ -11,6 +11,27 @@ class CasbinPlaySpec extends Specification {
     Enforcer enforcer = enforcer()
 
     @Unroll
+    def "enyrole should view menu"() {
+        given:
+        Map<String, List<String>> sites2Roles = [
+                'paramountplus-italy': [role],
+        ]
+        Subject alice = new Subject('Alice', sites2Roles)
+        Resource article = new Resource('menu', null)
+        String site = 'paramountplus-italy'
+
+        expect:
+        enforcer.enforce(alice, article, site, action) == isAllowed
+
+        where:
+        role                                                      |   action   || isAllowed
+        'Producer'                                                |   'view'   || true
+        'Admin'                                                   |   'view'   || true
+        'INTL Shared Producers'                                   |   'view'   || true
+        'Producer - No Series | No Season | No Authority Types'   |   'view'   || true
+    }
+
+    @Unroll
     def "Producer permissions (#contentType, #action)"() {
         given:
         Map<String, List<String>> sites2Roles = [
