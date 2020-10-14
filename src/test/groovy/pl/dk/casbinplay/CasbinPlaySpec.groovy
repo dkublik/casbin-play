@@ -11,7 +11,7 @@ class CasbinPlaySpec extends Specification {
     Enforcer enforcer = enforcer()
 
     @Unroll
-    def "enyrole should view menu"() {
+    def "eny role should view menu (#role, #action)"() {
         given:
         Map<String, List<String>> sites2Roles = [
                 'paramountplus-italy': [role],
@@ -38,11 +38,11 @@ class CasbinPlaySpec extends Specification {
                 'paramountplus-italy': ['Producer'],
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        ContentResource article = new ContentResource(contentType)
+        ContentResource content = new ContentResource(contentType)
         String site = 'paramountplus-italy'
 
         expect:
-        enforcer.enforce(alice, article, site, action) == isAllowed
+        enforcer.enforce(alice, content, site, action) == isAllowed
 
         where:
         contentType         |   action      || isAllowed
@@ -57,17 +57,36 @@ class CasbinPlaySpec extends Specification {
                 'paramountplus-italy': ['Producer - No Series | No Season | No Authority Types'],
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        ContentResource article = new ContentResource(contentType)
+        ContentResource content = new ContentResource(contentType)
         String site = 'paramountplus-italy'
 
         expect:
-        enforcer.enforce(alice, article, site, action) == isAllowed
+        enforcer.enforce(alice, content, site, action) == isAllowed
 
         where:
         contentType         |   action      || isAllowed
         'Standard:Article'  |   'Delete'    || true
         'Standard:Series'   |   'Delete'    || false
         'Standard:Series'   |   'Publish'   || true
+    }
+
+    @Unroll
+    def "'INTL Shared Producer' field permissions (#fieldName, #action)"() {
+        given:
+        Map<String, List<String>> sites2Roles = [
+                'paramountplus-italy': ['INTL Shared Producer'],
+        ]
+        Subject alice = new Subject('Alice', sites2Roles)
+        FieldResource field = new FieldResource(fieldName)
+        String site = 'paramountplus-italy'
+
+        expect:
+        enforcer.enforce(alice, field, site, action) == isAllowed
+
+        where:
+        fieldName           |   action      || isAllowed
+        'Title'             |   'Edit'      || true
+        'DistPolicies'      |   'Edit'      || false
     }
 
    private Enforcer enforcer() {
