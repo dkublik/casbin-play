@@ -1,2 +1,5 @@
-p, ['Producer'; 'Admin'; 'INTL Shared Producers'], content, r_resource.contentType in ['Standard:Article'; 'Standard:Season'], .*
+p, ['Producer'; 'Admin'; 'INTL Shared Producers'], content, any(), .*
+p, ['Producer - No Series | No Season | No Authority Types'], content, !(r_resource.contentType in ['Standard:Season'; 'Standard:Series'; 'Standard:AuthorityType+']), .*
+p, ['Producer - No Series | No Season | No Authority Types'], content, r_resource.contentType in ['Standard:Season'; 'Standard:Series'],(Create)|(Edit)|(Publish)
+
 

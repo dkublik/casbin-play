@@ -4,23 +4,49 @@ import org.casbin.jcasbin.main.Enforcer
 import pl.dk.casbinplay.dsl.Eval2Function
 import pl.dk.casbinplay.dsl.HasRoleFunction
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class CasbinPlaySpec extends Specification {
 
-    def "should work"() {
+    Enforcer enforcer = enforcer()
+
+    @Unroll
+    def "Producer permissions (#contentType, #action)"() {
         given:
-        Enforcer enforcer = enforcer()
         Map<String, List<String>> sites2Roles = [
                 'paramountplus-italy': ['Producer'],
-                'testq-nick': ['INTL Shared Producer', 'Shared Producer']
         ]
         Subject alice = new Subject('Alice', sites2Roles)
-        Resource article = new Resource('content', 'Standard:Article')
-        String action = 'read'
+        Resource article = new Resource('content', contentType)
         String site = 'paramountplus-italy'
 
         expect:
-        enforcer.enforce(alice, article, site, action) == true
+        enforcer.enforce(alice, article, site, action) == isAllowed
+
+        where:
+        contentType         |   action      || isAllowed
+        'Standard:Article'  |   'Create'    || true
+        'Standard:Series'   |   'Edit'      || true
+    }
+
+    @Unroll
+    def "'Producer - No Series | No Season | No Authority Types' permissions (#contentType, #action)"() {
+        given:
+        Map<String, List<String>> sites2Roles = [
+                'paramountplus-italy': ['Producer - No Series | No Season | No Authority Types'],
+        ]
+        Subject alice = new Subject('Alice', sites2Roles)
+        Resource article = new Resource('content', contentType)
+        String site = 'paramountplus-italy'
+
+        expect:
+        enforcer.enforce(alice, article, site, action) == isAllowed
+
+        where:
+        contentType         |   action      || isAllowed
+        'Standard:Article'  |   'Delete'    || true
+        'Standard:Series'   |   'Delete'    || false
+        'Standard:Series'   |   'Publish'   || true
     }
 
    private Enforcer enforcer() {
