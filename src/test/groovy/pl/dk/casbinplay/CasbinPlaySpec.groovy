@@ -1,6 +1,7 @@
 package pl.dk.casbinplay
 
 import org.casbin.jcasbin.main.Enforcer
+import pl.dk.casbinplay.dsl.HasRoleFunction
 import spock.lang.Specification
 
 class CasbinPlaySpec extends Specification {

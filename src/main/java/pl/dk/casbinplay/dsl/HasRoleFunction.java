@@ -1,10 +1,11 @@
-package pl.dk.casbinplay;
+package pl.dk.casbinplay.dsl;
 
 import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorBoolean;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 import org.apache.commons.collections.CollectionUtils;
+import pl.dk.casbinplay.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class HasRoleFunction extends AbstractFunction {
 
     private String sanitize(String string) {
         string = string.trim();
-        if (string.startsWith("\"")) { // get rid of "[]"
+        if (string.startsWith("'")) { // get rid of "'"
             string = string.substring(1, string.length() - 1);
         }
         return string;
