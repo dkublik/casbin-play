@@ -12,6 +12,9 @@ import java.util.Map;
 
 public class Eval2Function extends AbstractFunction {
 
+    private final static char SCRIPT_LIST_SEPARATOR = ';'; // need to be ';' cause ',' is used to separate policy arguments
+    private final static char GROOVY_LIST_SEPARATOR = ',';
+
     private final CompilerConfiguration config;
 
     public Eval2Function() {
@@ -22,11 +25,11 @@ public class Eval2Function extends AbstractFunction {
     @Override
     public AviatorObject call(Map<String, Object> env, AviatorObject arg) {
         String script = FunctionUtils.getStringValue(arg, env);
-        script = script.replace(';', ',');
+        script = script.replace(SCRIPT_LIST_SEPARATOR, GROOVY_LIST_SEPARATOR);
         Binding binding = new Binding();
-        env.entrySet().forEach(entry -> {
-            binding.setProperty(entry.getKey(), entry.getValue());
-        });
+        env.entrySet().forEach(entry ->
+            binding.setProperty(entry.getKey(), entry.getValue())
+        );
         GroovyShell shell = new GroovyShell(Eval2Function.class.getClassLoader(), binding, config);
         Boolean result = (Boolean) shell.evaluate(script);
         return AviatorBoolean.valueOf(result);

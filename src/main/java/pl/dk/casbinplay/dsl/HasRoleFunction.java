@@ -13,23 +13,27 @@ import java.util.Map;
 
 public class HasRoleFunction extends AbstractFunction {
 
+    private final static String ROLES_SEPARATOR = ";";
+    private final static String LIST_START_MARKER = "[";
+    private final static String STRING_MARKER = "'";
+
     @Override
-    public AviatorObject call(Map<String, Object> env, AviatorObject arg) {
-        String rolesString = FunctionUtils.getStringValue(arg, env);
+    public AviatorObject call(Map<String, Object> env, AviatorObject subjectArg, AviatorObject siteArg, AviatorObject rolesArg) {
+        Subject subject = (Subject) FunctionUtils.getJavaObject(subjectArg, env);
+        String site = FunctionUtils.getStringValue(siteArg, env);
+        String rolesString = FunctionUtils.getStringValue(rolesArg, env);
         List<String> rolesListed = toList(rolesString);
-        String currentSite = (String) env.get("r_site");
-        Subject subject = (Subject) env.get("r_subject");
-        List<String> subjectRolesForCurrentSite = subject.getSite2Roles().get(currentSite);
-        boolean anyRoleMatches = CollectionUtils.containsAny(subjectRolesForCurrentSite, rolesListed);
+        List<String> subjectRoles = subject.getRoles(site);
+        boolean anyRoleMatches = CollectionUtils.containsAny(subjectRoles, rolesListed);
         return AviatorBoolean.valueOf(anyRoleMatches);
     }
 
     private List<String> toList(String stringList) {
-        if (stringList.startsWith("[")) { // get rid of "[]"
+        if (stringList.startsWith(LIST_START_MARKER)) { // get rid of "[]"
             stringList = stringList.substring(1, stringList.length() - 1);
         }
         List<String> list = new ArrayList<>();
-        for (String role: stringList.split(";")) {
+        for (String role: stringList.split(ROLES_SEPARATOR)) {
             role = sanitize(role);
             list.add(role);
         }
@@ -38,7 +42,7 @@ public class HasRoleFunction extends AbstractFunction {
 
     private String sanitize(String string) {
         string = string.trim();
-        if (string.startsWith("'")) { // get rid of "'"
+        if (string.startsWith(STRING_MARKER)) { // get rid of "'"
             string = string.substring(1, string.length() - 1);
         }
         return string;
