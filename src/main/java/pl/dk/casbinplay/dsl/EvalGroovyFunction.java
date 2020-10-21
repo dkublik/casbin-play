@@ -10,14 +10,14 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 
 import java.util.Map;
 
-public class Eval2Function extends AbstractFunction {
+public class EvalGroovyFunction extends AbstractFunction {
 
     private final static char SCRIPT_LIST_SEPARATOR = ';'; // need to be ';' cause ',' is used to separate policy arguments
     private final static char GROOVY_LIST_SEPARATOR = ',';
 
     private final CompilerConfiguration config;
 
-    public Eval2Function() {
+    public EvalGroovyFunction() {
         config = new CompilerConfiguration();
         config.setScriptBaseClass(PoliciesScript.class.getCanonicalName());
     }
@@ -30,13 +30,13 @@ public class Eval2Function extends AbstractFunction {
         env.entrySet().forEach(entry ->
             binding.setProperty(entry.getKey(), entry.getValue())
         );
-        GroovyShell shell = new GroovyShell(Eval2Function.class.getClassLoader(), binding, config);
+        GroovyShell shell = new GroovyShell(EvalGroovyFunction.class.getClassLoader(), binding, config);
         Boolean result = (Boolean) shell.evaluate(script);
         return AviatorBoolean.valueOf(result);
     }
 
     @Override
     public String getName() {
-        return "eval2";
+        return "eval";
     }
 }

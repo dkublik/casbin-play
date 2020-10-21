@@ -8,7 +8,7 @@ import spock.lang.Subject
 class Eval2FunctionSpec extends Specification {
 
     @Subject
-    Eval2Function eval2Function = new Eval2Function()
+    EvalGroovyFunction eval2Function = new EvalGroovyFunction()
 
     def "should evaluate script"() {
         given:

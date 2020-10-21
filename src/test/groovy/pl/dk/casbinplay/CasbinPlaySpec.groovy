@@ -1,7 +1,7 @@
 package pl.dk.casbinplay
 
 import org.casbin.jcasbin.main.Enforcer
-import pl.dk.casbinplay.dsl.Eval2Function
+import pl.dk.casbinplay.dsl.EvalGroovyFunction
 import pl.dk.casbinplay.dsl.HasRoleFunction
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -93,7 +93,7 @@ class CasbinPlaySpec extends Specification {
        String modelPath = this.class.classLoader.getResource('security/model.conf').path
        String policyPath = this.class.classLoader.getResource('security/policy.csv').path
        Enforcer enforcer = new Enforcer(modelPath, policyPath)
-       List.of(new HasRoleFunction(), new Eval2Function()).forEach(it -> {
+       List.of(new HasRoleFunction(), new EvalGroovyFunction()).forEach(it -> {
            enforcer.addFunction(it.getName(), it)
        })
        return enforcer
